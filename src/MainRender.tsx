@@ -7,15 +7,18 @@ import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { useColorScheme } from 'react-native';
 import { StackNavigation } from './presentation/navigation/StackNavigation';
 import { TokenProvider } from './presentation/provider/TokenProvider';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+
 
 export const MainRender = () => {
+    const queryClient = new QueryClient();
     const colorScheme = useColorScheme();
     const theme =  eva.light;
     const backgroungcolor =  '#FFFFFF';
 
    const colorText= '#222B45'
     return (
-        <>
+        <QueryClientProvider client={ queryClient }>
             <IconRegistry icons={EvaIconsPack} />
             <ApplicationProvider {...eva} theme={theme}>
 
@@ -38,6 +41,6 @@ export const MainRender = () => {
                     </TokenProvider>
                 </NavigationContainer>
             </ApplicationProvider>
-        </>
+        </QueryClientProvider>
     )
 }
