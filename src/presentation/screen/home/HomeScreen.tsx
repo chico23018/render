@@ -1,4 +1,4 @@
-import { Button, Layout, List, Text } from "@ui-kitten/components"
+import { Button, List, } from "@ui-kitten/components"
 import { useTokenStore } from "../../store/useTokenStore";
 import { MainLayout } from "../../components/layout/MainLayout";
 
@@ -10,7 +10,7 @@ import { tokenStorage } from "../../../config/constant/constant";
 import { getProductsByPage } from "../../../config/client/service/get-deploy";
 
 import { LoadingScreen } from "../loading/LoadingScreen";
-import { ScrollView } from "react-native-gesture-handler";
+
 import { CustomCard } from "../../components/customComponents/CustomCard";
 
 
@@ -18,18 +18,20 @@ export const HomeScreen = () => {
 
   const queryClient = useQueryClient();
   const { checkToken } = useTokenStore();
-
-
+ 
   const { isLoading, data, error, isError } = useQuery({
     queryKey: ['products'],
+    staleTime: 1000 * 60 * 60, // 1 hour
     queryFn: getProductsByPage,
   });
 
   // Verifica si hubo un error
   if (isError) {
-    console.log("error qie", error.message)
-    checkToken()
-    // return <Text>Error al obtener los productos: {error.message}</Text>;
+    if( error.message.includes("401")){
+
+      checkToken()
+    }
+    
   }
   return (
 

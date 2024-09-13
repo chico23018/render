@@ -17,7 +17,6 @@ const tesloApi = axios.create({
   tesloApi.interceptors.request.use(
     async (config) => {
       const token = await StorageAdapter.getItem(tokenStorage);
-      console.log("Token enviado:", token); // <-- Verifica si el token existe
       if (token) {
         config.headers['authorization'] = `Bearer ${token}`;
       }

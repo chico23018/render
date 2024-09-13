@@ -5,12 +5,12 @@ import { tesloApi } from "../http/api";
 import { useTokenStore } from "../../../presentation/store/useTokenStore";
 import { StorageAdapter } from "../../storage/storage.adapter";
 import { tokenStorage } from "../../constant/constant";
-import { Metodo } from "./Metod";
+
 export const getProductsByPage = async (): Promise<ResponseRender[]> => {
 
   try {
     const { data } = await tesloApi.get<ResponseRender[]>('');
-    console.log("Datos obtenidos:", data); // <-- Verifica qué datos llegan
+ 
     return data;
   } catch (error) {
     if (isAxiosError(error)) {
@@ -18,7 +18,7 @@ export const getProductsByPage = async (): Promise<ResponseRender[]> => {
       if (error.request?.status) {
 
         await StorageAdapter.removeItem(tokenStorage);
-        throw new Error('Error token wrong');
+        throw new Error('401');
       }
     }
     console.log("Error general:", error);
