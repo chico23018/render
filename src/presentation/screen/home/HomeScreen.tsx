@@ -11,6 +11,7 @@ import { getProductsByPage } from "../../../config/client/service/get-deploy";
 
 import { LoadingScreen } from "../loading/LoadingScreen";
 import { ScrollView } from "react-native-gesture-handler";
+import { CustomCard } from "../../components/customComponents/CustomCard";
 
 
 export const HomeScreen = () => {
@@ -26,38 +27,38 @@ export const HomeScreen = () => {
 
   // Verifica si hubo un error
   if (isError) {
-    console.log("error qie",error.message)
+    console.log("error qie", error.message)
     checkToken()
     // return <Text>Error al obtener los productos: {error.message}</Text>;
   }
   return (
-    <ScrollView>
 
-      <MainLayout title="HomeScreen">
-        {isLoading ? (
-          <LoadingScreen />
-        ) : (
-          <Text>Datos: {JSON.stringify(data, null, 2)}</Text> // <-- Asegúrate de que los datos llegan aquí
-        )}
 
-        <Button onPress={async () => {
-          await StorageAdapter.removeItem(tokenStorage);
-          queryClient.invalidateQueries({ queryKey: ['products'] });  
-          checkToken()
-        }}>
-          Remover token
-        </Button>
-      </MainLayout>
-    </ScrollView>
+    <MainLayout title="HomeScreen">
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <List
+          data={animationMenuItems}
+          renderItem={({ item }) => <CustomCard name={item.name} id={item.id} />}
+          keyExtractor={(item) => item.id}
+          numColumns={3}
+          ListFooterComponent={<Button onPress={async () => {
+            await StorageAdapter.removeItem(tokenStorage);
+            queryClient.invalidateQueries({ queryKey: ['products'] });
+            checkToken()
+          }}>
+            Remover token
+          </Button>}
+        />
+      )}
+
+
+    </MainLayout>
+
   )
 }
 
-{/* <List
-        data={animationMenuItems}
-        renderItem={({ item }) => <CustomCard name={item.name} id={item.id} />}
-        keyExtractor={(item) => item.id}
-        numColumns={3}
-      /> */}
 export const animationMenuItems = [
   // 01-animationMenuItems
   {
