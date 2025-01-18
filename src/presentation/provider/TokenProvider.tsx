@@ -1,12 +1,12 @@
 
 import { PropsWithChildren, useEffect } from "react"
 import { useTokenStore } from "../store/useTokenStore"
-import { useNavigationCofig } from "../../config/useNavigationConfig";
+import { useNavigationConfig } from "../../config/useNavigationConfig";
 
 
 export const TokenProvider = ({ children }: PropsWithChildren) => {
     const { token,checkToken} = useTokenStore();
-    const { navigation } = useNavigationCofig();
+    const { navigation } = useNavigationConfig();
     useEffect(() => {
        
         checkToken();

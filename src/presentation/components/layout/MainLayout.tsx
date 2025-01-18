@@ -3,7 +3,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { DrawerActions, NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootStackParams } from "../../navigation/StackNavigation";
 import { MyIcon } from "../ui/MyIcon";
-
+import * as eva from '@eva-design/eva';
 
 
 interface Props {
@@ -13,6 +13,8 @@ interface Props {
   rightAction?: () => void;
   rightActionIcon?: string;
 
+  goBackBoolean?:boolean
+
   children?: React.ReactNode;
 }
 
@@ -21,22 +23,23 @@ export const MainLayout = ({
   subTitle,
   rightAction,
   rightActionIcon,
+  goBackBoolean=false,
   children,
 }: Props) => {
   const navigation = useNavigation<NavigationProp<RootStackParams>>();
 
   const { top } = useSafeAreaInsets();
-  const { canGoBack, goBack } = useNavigation();
+  const {  goBack } = useNavigation();
 
 
-  // const renderBackAction = () => (
-  //   <TopNavigationAction
-  //     icon={<MyIcon name="arrow-back-outline" />}
-  //     onPress={goBack}
-  //   />
-  // )
+  const backAction = () => (
+    <TopNavigationAction
+      icon={<MyIcon name="arrow-back-outline" />}
+      onPress={goBack}
+    />
+  )
 
-  const menu = () => (
+  const topLeft = () => (
     <TopNavigationAction
       icon={<MyIcon name='menu-outline' />}
       onPress={() => navigation.dispatch(DrawerActions.toggleDrawer)}
@@ -54,15 +57,16 @@ export const MainLayout = ({
   //   )
   // }
 
-
+  const theme =  eva.light;
 
   return (
-    <Layout style={{ paddingTop: top }}>
+    <Layout style={{ paddingTop: top}}>
       <TopNavigation
         title={title}
         subtitle={subTitle}
         alignment="center"
-        accessoryLeft={ menu}
+        style={{backgroundColor:theme['color-primary-500']}}
+        accessoryLeft={()=> goBackBoolean? backAction(): topLeft()}
       // accessoryRight={ () => <RenderRightAction /> }
       />
       <Divider />
@@ -74,3 +78,4 @@ export const MainLayout = ({
     </Layout>
   );
 };
+//'#e7ecff'

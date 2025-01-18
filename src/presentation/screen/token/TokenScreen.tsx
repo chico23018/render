@@ -1,39 +1,58 @@
-import { Button, Input, Layout, Text } from "@ui-kitten/components"
+import { Button, Input, Layout, Spinner, Text } from "@ui-kitten/components";
 import { useTokenStore } from "../../store/useTokenStore";
 import { useState } from "react";
-
-import { StorageAdapter } from "../../../config/storage/storage.adapter";
-import { tokenStorage } from "../../../config/constant/constant";
+import { Image, ScrollView } from "react-native";
+import { CheckToken } from "../../../hooks/CheckToken";
+import styles from "../../stylePresentation/StylePrentation";
 
 export const TokenScreen = () => {
-  const { token, checkToken } = useTokenStore();
+  const { checkToken } = useTokenStore();
+  const { checkTokenValidity, tokenLoading } = CheckToken();
   const [token1, setToken1] = useState('');
 
-  const saveToken = async () => {
-
-    await StorageAdapter.setItem(tokenStorage, token1);
-    checkToken();
-  }
+  // // Función para guardar el token en el almacenamiento
+  // const saveToken = async () => {
+  //   try {
+  //     await StorageAdapter.setItem(tokenStorage, token1);
+  //     checkToken(); // Actualiza el estado global del token
+  //     setToken1(''); // Limpia el campo de entrada después de guardar
+  //   } catch (error) {
+  //     console.error("Error saving token:", error);
+  //     // Aquí podrías mostrar una alerta si es necesario
+  //   }
+  // };
 
   return (
-    <Layout style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#f9f9f9' }}>
-
-
-      <Text style={{ fontSize: 30, fontWeight: 'bold', }}>
-        inserire suo token
-      </Text>
-
-      <Input
-
-        value={token1}
-        onChangeText={setToken1}
-        style={{ marginVertical: 5, width: '100%' }} />
-      <Button
-        onPress={saveToken}
-        style={{ width: '50%', alignSelf: 'center' }}>
-        click
-      </Button>
-    </Layout>
-  )
-}
-
+    <ScrollView style={styles.scrollView}>
+      <Layout style={styles.container}>
+        <Image
+          source={require('../../../assets/render.png')}
+          style={styles.image}
+          resizeMode="contain"
+        />
+        {tokenLoading ? (
+          <Layout style={styles.loadingContainer}>
+            <Spinner status='primary' size='large' />
+          </Layout>
+        ) : (
+          <>
+            <Text style={styles.title}>Enter your token</Text>
+            <Input
+              value={token1}
+              onChangeText={setToken1}
+              style={styles.input}
+              placeholder="Enter your token"
+            />
+            <Button onPress={() => checkTokenValidity(token1)} style={styles.button}>
+              Save Token
+            </Button>
+            <Text style={styles.description}>
+              Here you need to enter your token so that your services can be
+              restored from the Render dashboard. The token is saved in the phone's memory.
+            </Text>
+          </>
+        )}
+      </Layout>
+    </ScrollView>
+  );
+};

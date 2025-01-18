@@ -1,7 +1,6 @@
 import '../gesture-handler';
 import * as eva from '@eva-design/eva';
 import { NavigationContainer } from '@react-navigation/native';
-import { DrawerNavigation } from './presentation/navigation/DrawerNavigation';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import { useColorScheme } from 'react-native';
@@ -9,22 +8,22 @@ import { StackNavigation } from './presentation/navigation/StackNavigation';
 import { TokenProvider } from './presentation/provider/TokenProvider';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 
-
+const queryClient = new QueryClient();
 export const MainRender = () => {
-    const queryClient = new QueryClient();
+    
     const colorScheme = useColorScheme();
-    const theme =  eva.light;
-    const backgroungcolor =  '#FFFFFF';
-
+    const theme = eva.light;
+    const backgroungcolor =  '#f9f9f9';
+const isTrue =colorScheme === 'dark'? true:false;
    const colorText= '#222B45'
     return (
         <QueryClientProvider client={ queryClient }>
             <IconRegistry icons={EvaIconsPack} />
-            <ApplicationProvider {...eva} theme={theme}>
+            <ApplicationProvider {...eva} theme={theme} >
 
                 <NavigationContainer
                   theme={{
-                    dark: false,
+                    dark: isTrue,
                     colors: {
                          primary: theme['color-primary-500'],
                          background: backgroungcolor,

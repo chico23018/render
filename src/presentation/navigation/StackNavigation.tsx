@@ -3,12 +3,15 @@ import { createStackNavigator, StackCardStyleInterpolator, StackNavigationProp }
 import { LoadingScreen } from '../screen/loading/LoadingScreen';
 import { DrawerNavigation } from './DrawerNavigation';
 import { TokenScreen } from '../screen/token/TokenScreen';
-import { HomeScreen } from '../screen/home/HomeScreen';
+import { ServiceScreen } from '../screen/home/ServiceScreen';
+import { EventScreen } from '../screen/deploy/EventScreen';
+
 export type RootStackParams = {
     LoadingScreen: undefined;
     TokenScreen: undefined;
     DrawerScreen: undefined;
-    HomeScreen:undefined
+    ServiceScreen:undefined,
+    EventScreen:{ serveceId: string }
 }
 
 export const StackNavigation = () => {
@@ -25,7 +28,8 @@ export const StackNavigation = () => {
             <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
             <Stack.Screen name="TokenScreen" component={TokenScreen} />
             <Stack.Screen name="DrawerScreen" component={DrawerNavigation} />
-            <Stack.Screen name="HomeScreen" component={HomeScreen} />
+            <Stack.Screen name="ServiceScreen" component={ServiceScreen} />
+            <Stack.Screen name="EventScreen" component={EventScreen} />
         </Stack.Navigator>
     )
 }
